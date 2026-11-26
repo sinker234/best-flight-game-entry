@@ -82,11 +82,13 @@ export function stageShot(name, world) {
     return { screen: SCREEN_PLAY, best: world.state.score };
   }
   if (name === 'land') {
-    // Skip the rally: place the plane on the glide slope, right of the centreline so
-    // the runway shows beside the plane instead of behind it, and fly the approach in.
-    world.state.z = 21500;
-    world.state.x = 200;
-    world.state.altitude = 320;
+    // Skip the rally: place the plane on short final, right of the centreline so
+    // the runway shows beside the plane instead of behind it, and fly the last
+    // seconds in — close enough that the threshold, edge lines and painted 27
+    // are readable in the frame instead of a 10 px wedge at the horizon.
+    world.state.z = 25600;
+    world.state.x = 350;
+    world.state.altitude = 120;
     world.state.speed = 140;
     world.state.throttle = 45;
     world.state.ringsCleared = 12;
@@ -96,7 +98,7 @@ export function stageShot(name, world) {
     for (const ring of world.course) ring.cleared = true;
     world.state.message = 'FINAL APPROACH — RUNWAY 27 AHEAD';
     world.state.messageUntil = 9999;
-    flyFor(world, 14);
+    flyFor(world, 3);
     const over = world.state.phase === 'landed' || world.state.phase === 'crashed';
     return { screen: over ? (world.state.phase === 'landed' ? SCREEN_LANDED : SCREEN_OVER) : SCREEN_PLAY, best: world.state.score };
   }

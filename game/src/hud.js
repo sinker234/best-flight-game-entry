@@ -235,7 +235,9 @@ export function createHud(canvas) {
     context.fillRect(0, 596, FIELD.width, 124);
     context.fillStyle = PALETTE.panelEdge;
     context.fillRect(0, 596, FIELD.width, 1);
-    drawAttitude(state, 92, 656, 50);
+    // Ball shrunk and raised so the ATT label (cy + r + 16) lands at y=712, fully
+    // inside the 720-high field instead of clipping ~2 px off the letters at y=722.
+    drawAttitude(state, 92, 650, 46);
     drawTape(196, 612, 88, state.speed, 20, 'KT', 'AIRSPEED');
     drawTape(1090, 612, 88, state.altitude, 500, 'FT', 'ALTITUDE');
     drawHeading(state, 640, 622, 380);
