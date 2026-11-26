@@ -165,7 +165,7 @@ export function createWorld(seed) {
     // --- Ground: terrain, sea and the runway decide crash or landing. ---
     const ground = terrainHeight(state.x, state.z, seed);
     if (state.altitude <= ground) {
-      const onStrip = Math.abs(state.x - RUNWAY.x) <= RUNWAY.width / 2 && state.z >= RUNWAY.zStart && state.z <= RUNWAY.zEnd;
+      const onStrip = Math.abs(state.x - RUNWAY.x) <= RUNWAY.width / 2 && state.z >= RUNWAY.zStart && state.z <= RUNWAY.zEnd + RUNWAY.overrun;
       const gentle = state.verticalSpeed > -1200 && state.speed < 180 && Math.abs(state.roll) < 20;
       if (onStrip && gentle && state.phase !== PHASE_CRASHED) {
         state.phase = PHASE_LANDED;
@@ -186,7 +186,7 @@ export function createWorld(seed) {
         state.phase = PHASE_CRASHED;
         state.altitude = ground;
         if (ground <= 1 && state.z > 100) state.crashReason = 'DITCHED IN THE SEA';
-        else if (state.z >= RUNWAY.zStart && state.z <= RUNWAY.zEnd) state.crashReason = 'TOO HARD ON THE RUNWAY';
+        else if (state.z >= RUNWAY.zStart && state.z <= RUNWAY.zEnd + RUNWAY.overrun) state.crashReason = 'TOO HARD ON THE RUNWAY';
         else state.crashReason = 'TERRAIN IMPACT';
         events |= EVENT_CRASH | EVENT_OVER;
       }

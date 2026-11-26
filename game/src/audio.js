@@ -79,7 +79,7 @@ export function createAudio() {
     /** Call from any user gesture; safe to call repeatedly. */
     unlock() {
       ensure();
-      if (context && context.state === 'suspended') context.resume();
+      if (context && context.state === 'suspended') context.resume().catch(() => {});
     },
     /** Continuous engine + wind, from the plane's throttle and speed. */
     update(throttle, speed, flying) {

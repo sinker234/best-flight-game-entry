@@ -49,6 +49,8 @@ export const RUNWAY = {
   width: 34,
   elevation: 0,
   heading: 270,
+  /** Stopway past the far end: a gentle touchdown here still counts as landing. */
+  overrun: 1200,
 };
 
 export const SCORING = {

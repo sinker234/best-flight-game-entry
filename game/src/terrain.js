@@ -52,6 +52,13 @@ export function terrainHeight(x, z, seed) {
     const t = smoothstep(160, 60, Math.abs(x)) * smoothstep(23600, 24400, z);
     h = h * (1 - t) + 34 * t;
   }
+  // Overrun: flat, low ground just past the far end, as a real airfield has — a
+  // plane that floats past the pavement settles or goes around instead of hitting
+  // a terrain wall one foot past the threshold.
+  if (Math.abs(x) < 200 && z >= RUNWAY.zEnd && z < RUNWAY.zEnd + 1600) {
+    const t = smoothstep(200, 80, Math.abs(x)) * smoothstep(RUNWAY.zEnd + 1600, RUNWAY.zEnd + 300, z);
+    h = h * (1 - t) + 8 * t;
+  }
   if (inCity(x, z)) h = 24 + fbm2(x * 0.004, z * 0.004, seed + 9) * 6;
   return h;
 }
@@ -86,6 +93,9 @@ export function buildCourse(seed) {
     let altitude = 750 + Math.sin(i * 0.6 + 1.2) * 260 + rng() * 160;
     const taper = 1 - 0.45 * Math.max(0, (i - 8) / 3);
     altitude *= taper;
+    // The rally flows instead of porpoising: consecutive rings never demand more
+    // than a gentle 150 ft step, so no ring forces a steep dive to reach the next.
+    if (i > 0) altitude = clamp(altitude, rings[i - 1].altitude - 150, rings[i - 1].altitude + 150);
     rings.push({ index: i + 1, x, z, altitude, radius: RINGS.radius });
   }
   return rings;

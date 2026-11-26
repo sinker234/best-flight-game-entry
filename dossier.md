@@ -13,7 +13,8 @@ mountain wall to the west, the town of Seabreeze with its lighthouse, and three 
 turbines on the hilltops. The rally is **12 glowing gold rings** woven along the
 coast — fly through each one (+250 points, chime, "RING n CLEARED") — then a **final
 approach and landing on Runway 27** (+1,000, plus a time bonus and a smooth-landing
-bonus). Miss a ring and the rally goes on; ditch in the sea, hit terrain, or slam
+bonus). The rings step gently (never more than 150 ft between neighbours), and a
+1,200 ft stopway past the far end of the runway catches a long landing. Miss a ring and the rally goes on; ditch in the sea, hit terrain, or slam
 the runway and the flight is over.
 
 ## What is on screen (what the judge sees)
@@ -76,8 +77,15 @@ fixed seed (`?shot=…&seed=7`), taken in headless Chrome:
 
 Loaded in headless Chrome (Camoufox) with zero console errors and zero network
 requests; started with Space, steered with arrow keys and the mouse (heading moved
-335° after a left turn), cleared rings, and landed on Runway 27. The `?shot=` scenes
-are deterministic: the same seed always stages the same frame. A headless Node
-simulation of the real world + autopilot lands on Runway 27 for seeds 7 and 42
-(11/12 and 10/12 rings, scores 4,850 and 4,600). Play-test script:
-`~/workspace/makefun-agent/playtest-flight.py`.
+335° after a left turn), paused with P, crashed into terrain and got the crash
+screen, cleared rings, and landed on Runway 27. The `?shot=` scenes are
+deterministic: the same seed always stages the same frame. A headless Node
+simulation of the real world + autopilot lands on Runway 27 for seeds 1–30
+(12/12 rings, score 5,100 every seed); a deliberately sloppy pilot at 60% control
+authority still lands 10/10, touching down in the 1,200 ft stopway, while at 50%
+it lands 10/10 further down the stopway — the old terrain wall one foot past the
+runway end is gone. Ring steps are capped at 150 ft, so the worst mid-rally dive
+across 30 seeds is −2,649 FPM (round 1 showed −3,169 FPM in the play screenshot;
+round 2 shows −1,818 FPM). Play-test script:
+`~/workspace/makefun-agent/r2-audit/playtest-r2.py`; sims in
+`~/workspace/makefun-agent/r2-audit/verify1.mjs`, `verify2.mjs`, `verify3.mjs`.
